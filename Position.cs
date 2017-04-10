@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
-
-namespace NaughtsAndCrosses
+﻿namespace NaughtsAndCrosses
 {
     public enum Token
     {
@@ -27,6 +20,14 @@ namespace NaughtsAndCrosses
         public Position()
         {
             board = new Token[BoardSize, BoardSize];
+        }
+
+        public Position(Position other)
+        {
+            board = new Token[BoardSize, BoardSize];
+            for (int i = 0; i < BoardSize; ++i)
+                for (int j = 0; j < BoardSize; ++j)
+                    this.SetAt(other.GetAt(new Vector2(i, j)), new Vector2(i, j));
         }
 
         public int GetSize() { return BoardSize; }
@@ -70,8 +71,14 @@ namespace NaughtsAndCrosses
 
             for (int i = 0; i < BoardSize; ++i)
             {
-                if (i != 0) rows += "\n──┼───┼──\n";
-                rows += board[i, 0].ToDescription() + " │ ";
+                if (i != 0)
+                {
+                    rows += "\n";
+                    for (int j = 0; j < BoardSize - 1; ++j)
+                        rows += "──┼─";
+                    rows += "─\n";
+                }
+                    rows += board[i, 0].ToDescription() + " │ ";
                 for (int j = 1; j < BoardSize - 1; ++j)
                 {
                     rows += board[i, j].ToDescription() + " │ ";

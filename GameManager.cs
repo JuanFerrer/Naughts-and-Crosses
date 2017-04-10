@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace NaughtsAndCrosses
 {
@@ -23,22 +19,9 @@ namespace NaughtsAndCrosses
         //*******************************************************
         // Logic
         //*******************************************************
-        static int[] validInputArray = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };  //Controls for movement selection. Each int corresponds to a possible position
-
-        static int[] winningLine1 = { 1, 2, 3 };
-        static int[] winningLine2 = { 4, 5, 6 };
-        static int[] winningLine3 = { 7, 8, 9 };
-        static int[] winningLine4 = { 1, 4, 7 };
-        static int[] winningLine5 = { 2, 5, 8 };
-        static int[] winningLine6 = { 3, 6, 9 };
-        static int[] winningLine7 = { 1, 5, 9 };
-        static int[] winningLine8 = { 3, 5, 7 };
-
-        static List<int[]> winningCombinations = new List<int[]>() { winningLine1, winningLine2, winningLine3, winningLine4, winningLine5, winningLine6, winningLine7, winningLine8 };
-
         static Player[] players;
 
-        static public Position board;
+        static public Position Board;
 
         /// <summary>
         /// Manager setup
@@ -65,8 +48,8 @@ namespace NaughtsAndCrosses
         static public void StartGame()
         {
             InGame = true;
-            board = new Position();
-            board.Reset();
+            Board = new Position();
+            Board.Reset();
 
             for (int i = 0; i < PlayerAmount; ++i)
             {
@@ -83,7 +66,7 @@ namespace NaughtsAndCrosses
         static public void TurnCycle()
         {
             Menu.ShowProgress();
-            DoPlayerMovement(Menu.GetUserPlay());
+            DoPlayerMovement(players[CurrentPlayer].GetPlay());
 
             //else   //AI
             //{
@@ -102,17 +85,13 @@ namespace NaughtsAndCrosses
         /// </summary>
         static public void DoPlayerMovement(Vector2 move)
         {
-            if (board.GetAt(move) == Token.E)
+            if (Board.GetAt(move) == Token.E)
             {
-                board.SetAt(players[CurrentPlayer].GetToken(), move);
+                Board.SetAt(players[CurrentPlayer].GetToken(), move);
                 players[CurrentPlayer].AddTokenPos(move);
                 IncreasePlayer();
             }
-            else
-            {
-                Console.WriteLine("Please, select a valid movement");
-                Console.ReadKey();
-            }
+            else Menu.RequestValidMove();
         }
 
         /// <summary>

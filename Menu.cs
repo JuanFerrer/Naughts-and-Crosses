@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NaughtsAndCrosses
 {
@@ -11,25 +7,6 @@ namespace NaughtsAndCrosses
     static class Menu
     {
         static private string[] menuOptions = { "Start", "Options", "Exit" };
-        static private string cellVerticalLine = "│";
-        static private string cellHorizontalLine = "─";
-        static private string cellTJoint = "┼";
-
-        static private string _defaultCell  = "  │   │  \n──┼───┼──\n  │   │  \n──┼───┼──\n  │   │  ";
-        static string currentGame           = "  │   │  \n──┼───┼──\n  │   │  \n──┼───┼──\n  │   │  ";
-        static private string _key          = "7 │ 8 │ 9\n──┼───┼──\n4 │ 5 │ 6\n──┼───┼──\n1 │ 2 │ 3"; /* Explanation:
-            Character position in string
-            7 = char 0
-            8 = char 4
-            9 = char 8
-            4 = char 20
-            5 = char 24
-            6 = char 28
-            1 = char 40
-            2 = char 44
-            3 = char 48
-            */
-
 
         /// <summary>
         /// Show starting screen and prepare menu
@@ -38,7 +15,7 @@ namespace NaughtsAndCrosses
         {
             Console.Clear();
             Console.WriteLine("Welcome to Naughts and Crosses\nNumber of players: {0}\n", GameManager.IsSinglePlayer ? "1" : "2");
-            
+
             for (int i = 0; i < menuOptions.Length; i++)
                 Console.WriteLine("{0}. {1}", i + 1, menuOptions[i]);
         }
@@ -69,16 +46,16 @@ namespace NaughtsAndCrosses
             int userInput;
             for (int i = 0; i < coords.Length; ++i)
             {
-                Console.Write(i == 0? "x: " : "y: ");
+                Console.Write(i == 0 ? "x: " : "y: ");
                 bool inputIsNumber = int.TryParse(Console.ReadLine(), out userInput);
-                bool inputIsValid = 0 <= userInput && userInput < GameManager.board.GetSize();
+                bool inputIsValid = 0 <= userInput && userInput < GameManager.Board.GetSize();
                 while (!inputIsNumber || !inputIsValid)
                 {
-                    Console.WriteLine("Please, select a valid movement");
+                    RequestValidMove();
                     inputIsNumber = int.TryParse(Console.ReadLine(), out userInput);
-                    inputIsValid = 0 <= userInput && userInput < GameManager.board.GetSize();
+                    inputIsValid = 0 <= userInput && userInput < GameManager.Board.GetSize();
                 }
-                coords[i] = userInput;               
+                coords[i] = userInput;
             }
             // Reversing coordinates to have horizontal x
             return new Vector2(coords[1], coords[0]);
@@ -110,13 +87,16 @@ namespace NaughtsAndCrosses
             //Show progress on screen
             Console.Clear();
             Console.WriteLine("Enter the position where you want to put your next token:\n\nIntructions:\nEnter 0-based x and then y\nFor example 0 0 will be top left corner");
-            Console.WriteLine("\nYour game:\n" + GameManager.board + "\n");
+            Console.WriteLine("\nYour game:\n" + GameManager.Board + "\n");
         }
 
+        /// <summary>
+        /// End screen
+        /// </summary>
         static public void ShowResults()
         {
             Console.Clear();
-            Console.WriteLine("Your game:\n" + GameManager.board.ToString() + "\n");
+            Console.WriteLine("Your game:\n" + GameManager.Board.ToString() + "\n");
             if (GameManager.Winner != -1)
                 Console.WriteLine("Player " + (GameManager.Winner + 1) + " wins");
             else
@@ -124,6 +104,14 @@ namespace NaughtsAndCrosses
                 Console.WriteLine("It's a tie!");
             }
             Console.ReadLine();
+        }
+
+        /// <summary>
+        /// Prompt the user to enter a valid movement
+        /// </summary>
+        static public void RequestValidMove()
+        {
+            Console.WriteLine("Please, select a valid movement");
         }
 
         /// <summary>

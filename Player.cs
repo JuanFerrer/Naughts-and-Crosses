@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System.Collections.Generic;
 
 namespace NaughtsAndCrosses
 {
@@ -26,7 +21,7 @@ namespace NaughtsAndCrosses
         /// </summary>
         public Player()
         {
-
+            IsAI = false;
         }
 
         /// <summary>
@@ -52,7 +47,7 @@ namespace NaughtsAndCrosses
         /// <returns></returns>
         public bool IsWinner()
         {
-            int size = GameManager.board.GetSize();
+            int size = GameManager.Board.GetSize();
 
             int[] tokensInRowCount = new int[size];
             int[] tokensInColCount = new int[size];
@@ -77,11 +72,23 @@ namespace NaughtsAndCrosses
             }
             return false;
         }
+
+        /// <summary>
+        /// Call UI to get play from the user
+        /// </summary>
+        /// <returns></returns>
+        public virtual Vector2 GetPlay()
+        {
+            return Menu.GetUserPlay();
+        }
+
         public List<Vector2> GetTokenPos() { return tokenPos; }
         public Token GetToken() { return token; }
         public int GetNumber() { return number; }
         public void SetToken(Token newToken) { token = newToken; }
         public void SetNumber(int newNum) { number = newNum; }
+        public bool IsAI { get; protected set; }
+
 
 
         /// <summary>
@@ -96,6 +103,7 @@ namespace NaughtsAndCrosses
                 if (!tokenPos.Contains(new Vector2(isLTR? i : (size - 1) - i, i))) return false;
             return true;
         }
+
 
         private List<Vector2> tokenPos;
         private Token token;
