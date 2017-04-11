@@ -30,9 +30,6 @@ namespace NaughtsAndCrosses
         static public bool Init()
         {
             InGame = false;
-            Player1Wins = false;
-            Player2Wins = false;
-            IsTie = false;
             IsSinglePlayer = true;
             CurrentPlayer = 0;
             Winner = -1;
@@ -48,6 +45,7 @@ namespace NaughtsAndCrosses
         static public void StartGame()
         {
             InGame = true;
+            Winner = -1;
             Board = new Position();
             Board.Reset();
 

@@ -47,30 +47,30 @@ namespace NaughtsAndCrosses
         /// <returns></returns>
         public bool IsWinner()
         {
-            int size = GameManager.Board.GetSize();
+            return GameManager.Board.TokenWins(GetToken());
+            //int size = GameManager.Board.GetSize();
+            //int[] tokensInRowCount = new int[size];
+            //int[] tokensInColCount = new int[size];
 
-            int[] tokensInRowCount = new int[size];
-            int[] tokensInColCount = new int[size];
+            //// Increase the amount of tokens found in a specific row or column
+            //foreach (Vector2 t in tokenPos)
+            //{
+            //    tokensInRowCount[t.x]++;
+            //    tokensInColCount[t.y]++;
 
-            // Increase the amount of tokens found in a specific row or column
-            foreach (Vector2 t in tokenPos)
-            {
-                tokensInRowCount[t.x]++;
-                tokensInColCount[t.y]++;
-
-                // If the amount of tokens in a row or column equals the amount of rows, we have a complete row or column
-                if (tokensInRowCount[t.x] == size || tokensInColCount[t.y] == size)
-                    return true;
-            }
-            // Check diagonals
-            // Check center piece first. If it's not ours, we don't have a diagonal
-            if (tokenPos.Contains(new Vector2(size / 2, size / 2)))
-            {
-                // Ok, then check all diagonals
-                if (IsDiagonal(size, true)) return true;
-                else if (IsDiagonal(size, false)) return true;
-            }
-            return false;
+            //    // If the amount of tokens in a row or column equals the amount of rows, we have a complete row or column
+            //    if (tokensInRowCount[t.x] == size || tokensInColCount[t.y] == size)
+            //        return true;
+            //}
+            //// Check diagonals
+            //// Check center piece first. If it's not ours, we don't have a diagonal
+            //if (tokenPos.Contains(new Vector2(size / 2, size / 2)))
+            //{
+            //    // Ok, then check all diagonals
+            //    if (IsDiagonal(size, true)) return true;
+            //    else if (IsDiagonal(size, false)) return true;
+            //}
+            //return false;
         }
 
         /// <summary>
@@ -97,12 +97,12 @@ namespace NaughtsAndCrosses
         /// <param name="max">Size of board</param>
         /// <param name="isLTR">Is left to right diagonal</param>
         /// <returns></returns>
-        private bool IsDiagonal(int size, bool isLTR)
-        {
-            for (int i = 0; i < size; ++i)
-                if (!tokenPos.Contains(new Vector2(isLTR? i : (size - 1) - i, i))) return false;
-            return true;
-        }
+        //private bool IsDiagonal(int size, bool isLTR)
+        //{
+        //    for (int i = 0; i < size; ++i)
+        //        if (!tokenPos.Contains(new Vector2(isLTR? i : (size - 1) - i, i))) return false;
+        //    return true;
+        //}
 
 
         private List<Vector2> tokenPos;

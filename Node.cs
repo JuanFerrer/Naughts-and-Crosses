@@ -11,8 +11,9 @@ namespace NaughtsAndCrosses
         Position pos;
         List<Node> children;
         Node parent;
-        int value;  // How good this position is.Each winning and losing position from children list respectively increases or decreases the value of this node. 
         Vector2 moveMade;   // Mode that led to this position
+        double value;          // How good this position is.Each winning and losing position from children list respectively increases or decreases the value of this node. 
+        int depth;          // Take into account how many moves have been take to get here
 
         public Node()
         {
@@ -23,13 +24,14 @@ namespace NaughtsAndCrosses
         /// </summary>
         /// <param name="newPos"></param>
         /// <param name="newParent"></param>
-        public Node(Position newPos, Vector2 move, Node newParent)
+        public Node(Position newPos, Vector2 move, int newDepth, Node newParent)
         {
             pos = new Position(newPos);
+            children = new List<Node>();
             parent = newParent;
             moveMade = move;
-            value = 0;
-            children = new List<Node>();
+            value = 0.0;
+            depth = newDepth;
         }
 
         /// <summary>
@@ -41,12 +43,12 @@ namespace NaughtsAndCrosses
             // If it's a winning position for the player that requested the search stop
             if (pos.TokenWins(originalToken))
             {
-                value = 1;
+                value = 2.0 / depth;
                 return;
             }
             if (pos.TokenWins(originalToken == Token.O ? Token.X : Token.O))
             {
-                value = -1;
+                value = -2.0 / depth;
                 return;
             }
             for (int i = 0; i < pos.GetSize(); ++i)
@@ -59,7 +61,7 @@ namespace NaughtsAndCrosses
                         // When found, temporarily set to token...
                         localBoard.SetAt(turnToken, new Vector2(i, j));
                         // add it to the children list...
-                        children.Add(new Node(localBoard, new Vector2(i, j), this));
+                        children.Add(new Node(localBoard, new Vector2(i, j), depth + 1, this));
                         // and change it back to empty, to keep searching
                         localBoard.SetAt(Token.E, new Vector2(i, j));
                     }
@@ -101,7 +103,7 @@ namespace NaughtsAndCrosses
                 throw new InvalidOperationException("Empty list");
             }
 
-            int maxValue = int.MinValue;
+            double maxValue = double.MinValue;
             Vector2 bestMove = new Vector2(-1, -1);
             foreach (Node node in children)
             {
