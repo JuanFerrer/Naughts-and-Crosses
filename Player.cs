@@ -92,7 +92,7 @@ namespace NaughtsAndCrosses
 
 
         /// <summary>
-        /// 
+        /// Check diagonals
         /// </summary>
         /// <param name="max">Size of board</param>
         /// <param name="isLTR">Is left to right diagonal</param>

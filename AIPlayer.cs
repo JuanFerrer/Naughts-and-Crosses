@@ -8,7 +8,7 @@ namespace NaughtsAndCrosses
 {
     class AIPlayer : Player
     {
-        AIPlayer()
+        public AIPlayer()
         {
             IsAI = true;
         }
@@ -19,41 +19,28 @@ namespace NaughtsAndCrosses
         /// <returns></returns>
         public override Vector2 GetPlay()
         {
-            Vector2 move;
             Position board = GameManager.Board;
-            Node baseNode = new Node(board, new Node());
-            baseNode.PopulateChildren();
-
-
-            return move;
+            Node baseNode = new Node(board, new Vector2(-1, -1), new Node());
+            baseNode.PopulateChildren(GetToken());
+            CalculateTreeResults(baseNode);
+            return GetBestMove(baseNode);
         }
 
         /// <summary>
-        /// Recursively, look for empty spaces, copy the passed board and put a piece in that one
+        /// Go through the tree and calculate
         /// </summary>
-        /// <param name="board"></param>
-        private void AddChildPosToTree(Position board, Node parentNode)
+        private void CalculateTreeResults(Node node)
         {
-            Position localBoard = new Position(board);
+            node.CalculateNodeValue(GetToken());
+        }
 
-
-
-            positionTree.Add(new Node(localBoard, parentNode));
-
-
-
-            for (int i = 0; i < board.GetSize(); ++i)
-            {
-                for (int j = 0; j < board.GetSize(); ++j)
-                {
-                    if (board.GetAt(new Vector2(i, j)) == Token.E)
-                    {
-                        localBoard.SetAt(GetToken(), new Vector2(i, j));
-                        isMyTurn = !isMyTurn;   // Toggle isMyTurn to make sure, next simulation is for opponent
-                        AddChildPosToTree(localBoard, isMyTurn);
-                    }
-                }
-            }
+        /// <summary>
+        /// Analyse results and find move with highest chance to win
+        /// </summary>
+        /// <returns></returns>
+        private Vector2 GetBestMove(Node node)
+        {
+            return node.GetBestMoveInChildren();
         }
     }
 }

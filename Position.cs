@@ -78,7 +78,7 @@
                         rows += "──┼─";
                     rows += "─\n";
                 }
-                    rows += board[i, 0].ToDescription() + " │ ";
+                rows += board[i, 0].ToDescription() + " │ ";
                 for (int j = 1; j < BoardSize - 1; ++j)
                 {
                     rows += board[i, j].ToDescription() + " │ ";
@@ -87,6 +87,48 @@
             }
             return rows;
             //return "  │   │  \n──┼───┼──\n  │   │  \n──┼───┼──\n  │   │  ";
+        }
+
+
+        /// <summary>
+        /// Check if the requested token has won this position
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public bool TokenWins(Token token)
+        {
+            int[] tokensInRowCount = new int[BoardSize];
+            int[] tokensInColCount = new int[BoardSize];
+
+            for (int i = 0; i < BoardSize; ++i)
+                for (int j = 0; j < BoardSize; ++j)
+                    if (board[j, i] == token)
+                    {
+                        tokensInRowCount[i]++;
+                        tokensInColCount[j]++;
+                        if (tokensInRowCount[i] == BoardSize || tokensInColCount[j] == BoardSize)
+                            return true;
+                    }
+            // Check diagonals
+            if (board[BoardSize / 2, BoardSize / 2] == token)
+            {
+                // Ok, then check all diagonals
+                if (IsDiagonal(token, true)) return true;
+                else if (IsDiagonal(token, false)) return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Check diagonals
+        /// </summary>
+        /// <param name="isLTR">Is left to right diagonal</param>
+        /// <returns></returns>
+        private bool IsDiagonal(Token token, bool isLTR)
+        {
+            for (int i = 0; i < BoardSize; ++i)
+                if (board[(isLTR ? i : (BoardSize - 1) - i), i] != token) return false;
+            return true;
         }
 
         private Token[,] board;

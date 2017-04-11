@@ -53,7 +53,10 @@ namespace NaughtsAndCrosses
 
             for (int i = 0; i < PlayerAmount; ++i)
             {
-                players[i] = new Player();
+                if (i == 0)
+                    players[i] = new Player();
+                else
+                    players[i] = new AIPlayer();
                 players[i].Init();
                 players[i].SetToken((Token)i);
                 players[i].SetNumber(i);
