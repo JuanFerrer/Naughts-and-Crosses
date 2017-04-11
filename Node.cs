@@ -44,7 +44,7 @@ namespace NaughtsAndCrosses
                 value = 1;
                 return;
             }
-            else if (pos.TokenWins(originalToken == Token.O ? Token.X : Token.O))
+            if (pos.TokenWins(originalToken == Token.O ? Token.X : Token.O))
             {
                 value = -1;
                 return;
@@ -77,7 +77,7 @@ namespace NaughtsAndCrosses
         public void CalculateNodeValue(Token token)
         {
             // If we still have children, do the same for them
-            if (children.Count != 0)
+             if (children.Count != 0)
             {
                 foreach (Node child in children)
                 {
@@ -101,7 +101,7 @@ namespace NaughtsAndCrosses
                 throw new InvalidOperationException("Empty list");
             }
 
-            int maxValue = -1;
+            int maxValue = int.MinValue;
             Vector2 bestMove = new Vector2(-1, -1);
             foreach (Node node in children)
             {

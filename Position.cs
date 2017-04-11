@@ -63,7 +63,10 @@
                     board[i, j] = Token.E;
         }
 
-        // Own version of ToString
+        /// <summary>
+        /// Own version of ToString
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             // Needs fixing. E should be " "
@@ -130,6 +133,18 @@
                 if (board[(isLTR ? i : (BoardSize - 1) - i), i] != token) return false;
             return true;
         }
+
+        /// <summary>
+        /// Check if there are moves left
+        /// </summary>
+        /// <returns></returns>
+        public bool AnyMovesLeft()
+        {
+            foreach (Token t in board)
+                if (t == Token.E) return true;
+            return false;
+        }
+        
 
         private Token[,] board;
     }

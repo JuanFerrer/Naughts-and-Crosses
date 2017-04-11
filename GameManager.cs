@@ -81,6 +81,8 @@ namespace NaughtsAndCrosses
 
             //Win conditions
             CheckIfWon();
+            if (!Board.AnyMovesLeft())
+                InGame = false;
         }
 
         /// <summary>
