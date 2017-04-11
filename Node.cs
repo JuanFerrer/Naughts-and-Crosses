@@ -43,12 +43,12 @@ namespace NaughtsAndCrosses
             // If it's a winning position for the player that requested the search stop
             if (pos.TokenWins(originalToken))
             {
-                value = 2.0 / depth;
+                value = 1.0 / depth;
                 return;
             }
             if (pos.TokenWins(originalToken == Token.O ? Token.X : Token.O))
             {
-                value = -2.0 / depth;
+                value = -1.0 / depth;
                 return;
             }
             for (int i = 0; i < pos.GetSize(); ++i)
@@ -78,8 +78,8 @@ namespace NaughtsAndCrosses
         /// <param name="token">The token from the requesting player. The token whose winning position would mean +1</param>
         public void CalculateNodeValue(Token token)
         {
-            // If we still have children, do the same for them
-             if (children.Count != 0)
+            // If we still have children, do the same for them          
+            if (children.Count != 0)
             {
                 foreach (Node child in children)
                 {
@@ -88,8 +88,12 @@ namespace NaughtsAndCrosses
                 }
             }
             //// Otherwise, we're at the end of a branch. So, calculate this position
-            //else if (pos.TokenWins(token))
-            //    value = 1;
+            if (pos.TokenWins(token))
+                value = 1.0 / depth;
+            if (pos.TokenWins(token == Token.O ? Token.X : Token.O))
+                value = -1.0 / depth;
+            else
+                value = 0.5 / depth;
         }
 
         /// <summary>
