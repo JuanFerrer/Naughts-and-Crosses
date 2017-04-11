@@ -21,7 +21,7 @@ namespace NaughtsAndCrosses
         {
             Position board = GameManager.Board;
             Node baseNode = new Node(board, new Vector2(-1, -1), new Node());
-            baseNode.PopulateChildren(GetToken());
+            baseNode.PopulateChildren(GetToken(), GetToken());
             CalculateTreeResults(baseNode);
             return GetBestMove(baseNode);
         }

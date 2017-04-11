@@ -35,9 +35,20 @@ namespace NaughtsAndCrosses
         /// <summary>
         /// Recursively, look for empty spaces, copy the passed board and put a piece in that one
         /// </summary>
-        public void PopulateChildren(Token token)
+        public void PopulateChildren(Token turnToken, Token originalToken)
         {
             Position localBoard = new Position(pos);
+            // If it's a winning position for the player that requested the search stop
+            if (pos.TokenWins(originalToken))
+            {
+                value = 1;
+                return;
+            }
+            else if (pos.TokenWins(originalToken == Token.O ? Token.X : Token.O))
+            {
+                value = -1;
+                return;
+            }
             for (int i = 0; i < pos.GetSize(); ++i)
             {
                 for (int j = 0; j < pos.GetSize(); ++j)
@@ -46,7 +57,7 @@ namespace NaughtsAndCrosses
                     if (pos.GetAt(new Vector2(i, j)) == Token.E)
                     {
                         // When found, temporarily set to token...
-                        localBoard.SetAt(token, new Vector2(i, j));
+                        localBoard.SetAt(turnToken, new Vector2(i, j));
                         // add it to the children list...
                         children.Add(new Node(localBoard, new Vector2(i, j), this));
                         // and change it back to empty, to keep searching
@@ -56,7 +67,7 @@ namespace NaughtsAndCrosses
             }
             foreach (Node child in children)
                 // Now, do the same for each children of this node
-                child.PopulateChildren(token == Token.O ? Token.X : Token.O);
+                child.PopulateChildren(turnToken == Token.O ? Token.X : Token.O, originalToken);
         }
 
         /// <summary>
@@ -74,9 +85,9 @@ namespace NaughtsAndCrosses
                     value += child.value;
                 }
             }
-            // Otherwise, we're at the end of a branch. So, calculate this position
-            else if (pos.TokenWins(token))
-                value = 1;
+            //// Otherwise, we're at the end of a branch. So, calculate this position
+            //else if (pos.TokenWins(token))
+            //    value = 1;
         }
 
         /// <summary>
