@@ -88,12 +88,12 @@ namespace NaughtsAndCrosses
                 }
             }
             //// Otherwise, we're at the end of a branch. So, calculate this position
-            if (pos.TokenWins(token))
-                value = 1.0 / depth;
-            if (pos.TokenWins(token == Token.O ? Token.X : Token.O))
-                value = -1.0 / depth;
+            else if (pos.TokenWins(token))
+                value = 9.0 / depth;
+            else if (pos.TokenWins(token == Token.O ? Token.X : Token.O))
+                value = -10.0 / depth;
             else
-                value = 0.5 / depth;
+                value = 6.0 / depth;
         }
 
         /// <summary>
